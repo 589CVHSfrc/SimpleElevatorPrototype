@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.sim.SparkLimitSwitchSim;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -84,13 +86,16 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double getElevatorPosition(){
     return m_encoder.getPosition();
   }
+  public void setPose(double position){
+    m_closedLoopController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+  }
   // public double getEncoder(){
   // }
 
   @Override
   public void periodic() {
      double targetPosition = SmartDashboard.getNumber("Target Position", 0);
-      m_closedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+     SmartDashboard.putNumber("Encoder position", m_encoder.getPosition());
     // This method will be called once per scheduler run
     
   }
